@@ -34,7 +34,8 @@ support-agent/
 
 ## 🏗️ 系统架构
 
-![架构图](architecture.png)
+<img width="813" height="422" alt="iShot_2025-08-29_01 08 37" src="https://github.com/user-attachments/assets/1ea5b964-68fb-40de-ba22-4c72befec92b" />
+
 
 ## 🛠️ 前置条件
 
