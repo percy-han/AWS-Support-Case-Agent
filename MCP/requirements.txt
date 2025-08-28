@@ -1,0 +1,11 @@
+mcp>=1.10.0
+uv
+boto3
+loguru
+fastmcp
+pydantic
+typing
+bedrock-agentcore
+bedrock-agentcore-starter-toolkit
+strands-agents
+strands-agents-tools
