@@ -35,7 +35,7 @@ support-agent/
 ## 🛠️ 前置条件
 
 ### AWS服务要求
-- Python 3.8+
+- Python 3.10+
 - Jupyter Notebook或JupyterLab
 - AWS CLI已配置适当权限
 - AWS Support API访问权限(商业或企业支持计划)
