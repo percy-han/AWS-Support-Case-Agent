@@ -13,7 +13,6 @@ AgentCore 具有以下特性：
 ✅ 降低成本：免去企业自行构建专用代理基础设施的重复工作
 
 
-
 本项目在此基础上，聚焦以下应用场景：
 
 🛠 托管现有 MCP Server —— 将企业现有的 MCP Server 源代码直接托管到 AgentCore Runtime，最大程度减少改造成本
