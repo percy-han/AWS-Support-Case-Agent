@@ -1,6 +1,7 @@
 # AWS Support Case Agent with MCP Integration
 
 Amazon Bedrock AgentCore 可帮助您安全、大规模地部署和运行功能强大的人工智能代理。它提供专为动态代理工作负载构建的基础设施、可增强代理功能的强大工具，以及适用于现实部署场景的基础控件。AgentCore 服务可以组合使用，也可以单独使用。该服务可兼容任何框架（包括 CrewAI、LangGraph、LlamaIndex 和 Strands Agents 等），并支持 Amazon Bedrock 内外的所有基础模型，能为您带来极大的灵活性。AgentCore 可消除构建专用代理基础设施时千篇一律的繁重工作，让您可以加快代理进入量产的过程。
+
 当前大部分企业已经开发出对应的MCP Server，虽然AWS Gateway目前支持通过通过Lambda，OpenAPI schemas，REST AIP schemas来构建tool，但显然将企业现有的MCP Server源代码直接托管到Agentcore上能极大的节省改造成本。后续的主要工作则是如何构建Agent从而完成对托管在AgentCore Runtime上的MCP的调用。
 这里以智能管理AWS Support Case为场景，介绍如果通过Agent调用托管的MCP Server，从而实现AgentCore Runtime（Agent）到AgentCore Runtime（MCP）的调用。该方案已经包含了流式处理、认证授权、提示词优化等，从而帮你轻松的将自建的Agent+MCP业务移植到AWS AgentCore上。
 
