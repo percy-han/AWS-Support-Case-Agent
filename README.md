@@ -1,5 +1,5 @@
 # Intelligent AWS Support Case Management with MCP & Bedrock AgentCore
-## 智能化管理 AWS Support Case | 托管 MCP Server | 基于strands SDK创建Agent并托管到AgentCore 来调用 MCP
+## 智能化管理 AWS Support Case | 托管 MCP Server | 基于strands SDK创建Agent并托管到AgentCore实现MCP的调用
 
 Amazon Bedrock AgentCore 可帮助您安全、大规模地部署和运行功能强大的人工智能代理。
 它提供专为动态代理工作负载构建的基础设施、可增强代理功能的强大工具，以及适用于现实部署场景的基础控件。
@@ -11,6 +11,7 @@ AgentCore 具有以下特性：
 ✅ 模型灵活：可调用 Amazon Bedrock 内外的基础模型
 
 ✅ 降低成本：免去企业自行构建专用代理基础设施的重复工作
+
 
 
 本项目在此基础上，聚焦以下应用场景：
