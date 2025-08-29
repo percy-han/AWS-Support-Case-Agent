@@ -73,7 +73,7 @@ support-agent/
 
 ## 🚀 使用方法
 
-### 命令行界面(可选)
+### 可参考如下代码编写调用Agent的代码
 
 Case_Agent_On_AgentCore.ipynb notebook中有内置客户端调用Agent代码，可以直接使用：
 
@@ -140,84 +140,6 @@ if __name__ == "__main__":
     invoke_agent(prompt_text)
 ```
 
-## 📋 Notebook工作流程
-
-### Agent Notebook (`Agent/agent_on_Agentcore.ipynb`)
-
-notebook自动化完整的agent部署过程：
-
-1. **代码生成**: 使用 `%%writefile` 创建agent代码文件
-2. **运行时配置**: 设置Bedrock Agent Core运行时
-3. **AWS资源创建**: 自动创建：
-   - ECR仓库
-   - IAM执行角色
-   - CodeBuild项目
-4. **部署**: 使用CodeBuild将agent部署到AWS
-5. **测试**: 提供交互式测试功能
-
-### MCP Notebook (`MCP/MCP_On_AgentCore.ipynb`)
-
-处理MCP服务器设置和集成：
-
-1. **MCP服务器配置**: 设置AWS Support MCP服务器
-2. **客户端设置**: 配置MCP客户端连接
-3. **工具集成**: 将MCP工具与agent集成
-4. **测试**: 验证MCP功能
-
-### 部署架构
-
-notebook部署以下AWS资源：
-
-- **Bedrock Agent Core Runtime**: 托管agent逻辑
-- **ECR Repository**: 存储容器镜像
-- **IAM Roles**: 具有适当权限的执行和CodeBuild角色
-- **CodeBuild Project**: 构建和部署agent
-- **CloudWatch Logs**: Agent运行时日志
-
-## 🔧 核心组件
-
-### Agent Core (`Agent/`)
-
-- **aws_support_agent_client.py**: 与AWS Support交互的主客户端
-- **agentcore_agent_invoke_mcp_agentcore.py**: Agent Core和MCP之间的集成层
-
-### MCP集成 (`MCP/`)
-
-- **agent_invoke_mcp_tools_final.py**: MCP工具集成的最终实现
-- **my_mcp_client_remote.py**: 分布式场景的远程MCP客户端
-- **utils.py**: MCP操作的通用工具
-
-### AWS Support MCP服务器 (`MCP/awslabs/aws_support_mcp_server/`)
-
-用于AWS Support API集成的自定义MCP服务器实现。
-
-## 🌐 跨境电商特性
-
-- **多时区支持**: 支持北京时间(UTC+8)的国际运营
-- **本地化支持**: 处理中英文支持场景
-- **业务上下文**: 针对电商基础设施支持案例优化
-
-## 🐳 Docker支持
-
-Agent和MCP组件都包含用于容器化部署的Dockerfile：
-
-```bash
-# 构建Agent容器
-cd Agent/
-docker build -t aws-support-agent .
-
-# 构建MCP容器
-cd MCP/
-docker build -t aws-support-mcp .
-```
-
-## 📊 使用场景示例
-
-1. **自动化支持案例创建**: 基于CloudWatch告警创建支持案例
-2. **案例状态跟踪**: 监控和更新支持案例进度
-3. **知识库集成**: 利用AWS文档和最佳实践
-4. **多服务故障排除**: 处理跨多个AWS服务的复杂场景
-
 ## 🔒 安全考虑
 
 - 使用AWS IAM角色和策略进行安全访问
@@ -236,9 +158,8 @@ docker build -t aws-support-mcp .
 
 ### 日志位置
 
-- Agent运行时日志: `/aws/bedrock-agentcore/runtimes/{agent-id}-DEFAULT`
-- CodeBuild日志: AWS CodeBuild控制台
-- MCP服务器日志: 在notebook输出中查看
+- Agent运行时日志Cloudwatch log: `/aws/bedrock-agentcore/runtimes/{Agent Runtime ID}-DEFAULT`
+- CodeBuild日志CloudWatch log: `/aws/codebuild/bedrock-agentcore-{Agent Name}-builder`
 
 ## 🤝 贡献
 
