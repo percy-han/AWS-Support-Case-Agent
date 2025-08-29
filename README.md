@@ -5,31 +5,27 @@
 ## 🚀 功能特性
 
 - **智能支持案例管理**: 自动化AWS支持案例创建、跟踪和解决
+- **智能支持案例总结和洞察**: 支持只能对AWS Case进行总结分析并给出最佳实践和洞察
 - **MCP集成**: 利用模型上下文协议增强工具能力
 - **跨境电商专用**: 专为国际业务IT支持场景优化
 - **Bedrock Agent Core**: 基于AWS Bedrock Agent Core构建，支持可扩展的AI交互
-- **多界面支持**: 支持程序化API和Jupyter Notebook界面
-- **实时处理**: 支持北京时间(UTC+8)的实时支持案例处理
+- **可对现有MCP Server做无缝移植**: 支持北京时间(UTC+8)的实时支持案例处理
 
 ## 📁 项目结构
 
 ```
 support-agent/
-├── Agent/                          # Bedrock Agent实现
-│   ├── aws_support_agent_client.py # 主要agent客户端
-│   ├── agentcore_agent_invoke_mcp_agentcore.py # Agent core集成
-│   ├── agent_on_Agentcore.ipynb   # Jupyter notebook界面
-│   ├── requirements.txt           # Agent依赖
-│   └── Dockerfile                 # Agent容器化
-├── MCP/                           # 模型上下文协议实现
-│   ├── agent_invoke_mcp_tools_final.py # 最终MCP工具集成
-│   ├── my_mcp_client_remote.py    # 远程MCP客户端
+├── MCP/                           # MCP实现
 │   ├── utils.py                   # 工具函数
 │   ├── MCP_On_AgentCore.ipynb     # MCP notebook界面
 │   ├── requirements.txt           # MCP依赖
 │   └── awslabs/                   # AWS Labs MCP服务器
 │       └── aws_support_mcp_server/ # 支持专用MCP服务器
 └── README.md                      # 本文件
+├── Agent/                          # Bedrock Agent实现
+│   ├── Case_Agent_On_AgentCore.ipynb   # Jupyter notebook界面
+│   ├── requirements.txt           # Agent依赖
+│   └── Dockerfile                 # Agent的Dockerfile
 ```
 
 ## 🏗️ 系统架构
@@ -43,7 +39,7 @@ support-agent/
 - Python 3.10+
 - Jupyter Notebook或JupyterLab
 - AWS CLI已配置适当权限
-- AWS Support API访问权限(商业或企业支持计划)
+- 开通AWS Support API访问权限(商业或企业支持计划)
 
 ### ⚠️ 重要：Bedrock模型访问
 在开始之前，**必须**在AWS Bedrock控制台中开通所需的模型访问权限：
@@ -67,51 +63,81 @@ support-agent/
 1. 克隆仓库到本地
 2. 打开 `MCP/MCP_On_AgentCore.ipynb`
 3. **按顺序执行所有notebook单元格** - notebook包含所有必要的安装和配置步骤
-4. 验证MCP服务器正常运行
+4. 在notebook中可验证MCP服务器正常运行
 
 #### 第二步：Agent设置  
-1. 打开 `Agent/agent_on_Agentcore.ipynb`
+1. 打开 `Agent/Case_Agent_On_AgentCore.ipynb`
 2. **按顺序执行所有notebook单元格**
 3. 等待Agent部署完成(可能需要几分钟)
-4. 记录生成的Agent ARN用于后续使用
+4. 在notebook中可验证调用Agent的效果
 
 ## 🚀 使用方法
 
-### 基于Notebook的工作流程
-
-本项目设计为通过Jupyter Notebook使用，notebook包含设置和执行逻辑。
-
-#### Agent部署和使用
-
-1. 打开 `Agent/agent_on_Agentcore.ipynb`
-2. 按顺序执行单元格以：
-   - 自动安装依赖
-   - 配置Bedrock Agent Core运行时
-   - 将agent部署到AWS
-   - 测试agent功能
-
-#### MCP集成
-
-1. 打开 `MCP/MCP_On_AgentCore.ipynb`
-2. 执行单元格以：
-   - 设置MCP服务器组件
-   - 配置MCP客户端连接
-   - 测试MCP工具集成
-
-### Notebook主要特性
-
-- **自动化设置**: 依赖项在notebook单元格中安装
-- **分步部署**: 每个单元格处理特定的部署步骤
-- **交互式测试**: 内置功能测试单元格
-- **实时监控**: 查看部署进度和日志
-
 ### 命令行界面(可选)
 
-在notebook设置完成后，可以使用程序化访问：
+Case_Agent_On_AgentCore.ipynb notebook中有内置客户端调用Agent代码，可以直接使用：
 
-```bash
-# 使用自定义提示运行agent
-python Agent/aws_support_agent_client.py --prompt "为EC2实例连接问题创建支持案例"
+```Python
+import boto3
+import json
+import codecs
+import argparse
+from IPython.display import Markdown, display
+from boto3.session import Session
+
+prompt_text = "请分析我过去半年的case并给出最佳实践建议和洞察"
+
+def invoke_agent(prompt_text):
+    boto_session = Session()
+    REGION = boto_session.region_name
+
+    agent_arn = launch_result.agent_arn  # ⚠️ 确保 launch_result 已经定义
+    # agent_arn='arn:aws:bedrock-agentcore:us-west-2:xxxxxxxxxxxx:runtime/agentcore_agent_invoke_agentcore_mcp_test-7OoavJDoxG'
+
+    agentcore_client = boto3.client("bedrock-agentcore", region_name=REGION)
+
+    boto3_response = agentcore_client.invoke_agent_runtime(
+        agentRuntimeArn=agent_arn,
+        qualifier="DEFAULT",
+        payload=json.dumps({"prompt": prompt_text})
+    )
+
+    print(f"boto3_response: {boto3_response}")
+
+    # ---- 处理流式响应 ----
+    if "text/event-stream" in boto3_response.get("contentType", ""):
+        print("Processing streaming response with boto3:")
+        content = []
+        for line in boto3_response["response"].iter_lines(chunk_size=10):
+            if line:
+                line = line.decode("utf-8")
+                if line.startswith("data: "):
+                    data = line[6:].replace('"', "")  # Remove "data: " prefix
+                    data = data.replace("\\n", "\n")
+                    print(f"{data}", end="")
+                    content.append(data.replace('"', ""))
+        # Display the complete streamed response
+        full_response = " ".join(content)
+        display(Markdown(full_response))
+    else:
+        try:
+            events = []
+            for event in boto3_response.get("response", []):
+                events.append(event)
+        except Exception as e:
+            events = [f"Error reading EventStream: {e}"]
+
+        if events:
+            try:
+                response_data = json.loads(events[0].decode("utf-8"))
+                display(Markdown(response_data))
+            except:
+                print(f"Raw response: {events[0]}")
+
+
+if __name__ == "__main__":
+    print(f"Using prompt: {prompt_text}")
+    invoke_agent(prompt_text)
 ```
 
 ## 📋 Notebook工作流程
