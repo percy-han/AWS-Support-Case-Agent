@@ -50,9 +50,9 @@ support-agent/
 
 1. 登录AWS控制台，进入Amazon Bedrock服务
 2. 在左侧导航栏选择"Model access"(模型访问)
-3. 点击"Manage model access"(管理模型访问)
+3. 点击"Modify model access"(管理模型访问)
 4. 选择并启用以下推荐模型：
-   - **Claude 3.5 Sonnet** (推荐用于复杂推理)
+   - **Claude 3.7 Sonnet** (推荐用于复杂推理)
    - **Claude 3 Haiku** (推荐用于快速响应)
    - 或其他支持的Anthropic Claude模型
 5. 提交访问请求并等待批准(通常几分钟内完成)
