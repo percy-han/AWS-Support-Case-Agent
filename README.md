@@ -144,6 +144,9 @@ if __name__ == "__main__":
     print(f"Using prompt: {prompt_text}")
     invoke_agent(prompt_text)
 ```
+输出结果样例：
+<img width="2171" height="752" alt="image" src="https://github.com/user-attachments/assets/319b8e59-6374-440c-9f12-10b29bac02aa" />
+
 
 ## 🔒 安全考虑
 
