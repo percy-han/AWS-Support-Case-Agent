@@ -1,10 +1,20 @@
-# AWS Support Case Agent with MCP Integration
+# Intelligent AWS Support Case Management with MCP & Bedrock AgentCore
+## 智能化管理 AWS Support Case | 托管 MCP Server | 基于strands SDK创建Agent并托管到AgentCore 来调用 MCP
 
-Amazon Bedrock AgentCore 可帮助您安全、大规模地部署和运行功能强大的人工智能代理。它提供专为动态代理工作负载构建的基础设施、可增强代理功能的强大工具，以及适用于现实部署场景的基础控件。AgentCore 服务可以组合使用，也可以单独使用。该服务可兼容任何框架（包括 CrewAI、LangGraph、LlamaIndex 和 Strands Agents 等），并支持 Amazon Bedrock 内外的所有基础模型，能为您带来极大的灵活性。AgentCore 可消除构建专用代理基础设施时千篇一律的繁重工作，让您可以加快代理进入量产的过程。
+Amazon Bedrock AgentCore 可帮助您安全、大规模地部署和运行功能强大的人工智能代理。它提供专为动态代理工作负载构建的基础设施、可增强代理功能的强大工具，以及适用于现实部署场景的基础控件。
 
-当前大部分企业已经开发出对应的MCP Server，虽然AWS Gateway目前支持通过通过Lambda，OpenAPI schemas，REST AIP schemas来构建tool，但显然将企业现有的MCP Server源代码直接托管到Agentcore上能极大的节省改造成本。后续的主要工作则是如何构建Agent从而完成对托管在AgentCore Runtime上的MCP的调用。
+AgentCore 具有以下特性：
+✅ 兼容性强：支持 CrewAI、LangGraph、LlamaIndex、Strands Agents 等框架
+✅ 模型灵活：可调用 Amazon Bedrock 内外的基础模型
+✅ 降低成本：免去企业自行构建专用代理基础设施的重复工作
 
-这里以智能管理AWS Support Case为场景，介绍如果通过Agent调用托管的MCP Server，从而实现AgentCore Runtime（Agent）到AgentCore Runtime（MCP）的调用。该方案已经包含了流式处理、认证授权、提示词优化等，从而帮你轻松的将自建的Agent+MCP业务移植到AWS AgentCore上。
+本项目在此基础上，聚焦以下应用场景：
+
+🛠 托管现有 MCP Server —— 将企业现有的 MCP Server 源代码直接托管到 AgentCore Runtime，最大程度减少改造成本
+
+🤖 创建可调用 MCP 的 Agent —— 构建 Agent，从而实现 AgentCore Runtime（Agent） --> AgentCore Runtime（MCP） 的调用
+
+📂 智能化管理 AWS Support Case —— 通过 Agent 自动完成 Support Case 的查询、创建和管理，支持 流式处理、认证授权、提示词优化 等高级功能
 
 ## 🚀 功能特性
 
@@ -26,17 +36,17 @@ support-agent/
 │   ├── requirements.txt           # MCP依赖
 │   └── awslabs/                   # AWS Labs MCP服务器
 │       └── aws_support_mcp_server/ # 支持专用MCP服务器
-└── README.md                      # 本文件
 ├── Agent/                          # Bedrock Agent实现
 │   ├── Case_Agent_On_AgentCore.ipynb   # Jupyter notebook界面
 │   ├── requirements.txt           # Agent依赖
 │   └── Dockerfile                 # Agent的Dockerfile
+└── README.md                      # 本文件
 ```
 
 ## 🏗️ 系统架构
 
 <img width="813" height="422" alt="iShot_2025-08-29_01 08 37" src="https://github.com/user-attachments/assets/1ea5b964-68fb-40de-ba22-4c72befec92b" />
-
+AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Runtime 上），通过 AWS Support API 实现案例的查询、创建和总结
 
 ## 🛠️ 前置条件
 
