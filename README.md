@@ -6,13 +6,19 @@ Amazon Bedrock AgentCore 可帮助您安全、大规模地部署和运行功能�
 
 AgentCore 具有以下特性：
 ✅ 兼容性强：支持 CrewAI、LangGraph、LlamaIndex、Strands Agents 等框架
+
 ✅ 模型灵活：可调用 Amazon Bedrock 内外的基础模型
+
 ✅ 降低成本：免去企业自行构建专用代理基础设施的重复工作
+
 
 本项目在此基础上，聚焦以下应用场景：
 🛠 托管现有 MCP Server —— 将企业现有的 MCP Server 源代码直接托管到 AgentCore Runtime，最大程度减少改造成本
+
 🤖 创建可调用 MCP 的 Agent —— 构建 Agent，从而实现 AgentCore Runtime（Agent） --> AgentCore Runtime（MCP） 的调用
+
 📂 智能化管理 AWS Support Case —— 通过 Agent 自动完成 Support Case 的查询、创建和管理，支持 流式处理、认证授权、提示词优化 等高级功能
+
 
 ## 🚀 功能特性
 
