@@ -114,7 +114,7 @@ def _print_tool_info(tool_result):
                 print(f"   Parameters: {list(properties.keys())}")
         print()
 
-    print(f"✅ Successfully connected to MCP server!")
+    print("✅ Successfully connected to MCP server!")
     print(f"Found {len(tool_result.tools)} tools available.")
 
 

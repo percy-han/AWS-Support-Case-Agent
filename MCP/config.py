@@ -15,6 +15,9 @@ AGENT_NAME = 'awssupportmcpserver'
 ROLE_NAME_TEMPLATE = 'agentcore-{agent_name}-role'
 POLICY_NAME = 'AgentCorePolicy'
 
+# IAM
+AWS_SUPPORT_ACCESS_MANAGED_POLICY_ARN = "arn:aws:iam::aws:policy/AWSSupportAccess"
+
 # MCP Configuration
 MCP_ENTRYPOINT = 'awslabs/aws_support_mcp_server/server.py'
 REQUIREMENTS_FILE = 'requirements.txt'

@@ -16,6 +16,7 @@ from config import (
     ROLE_CREATION_WAIT_SECONDS,
     ROLE_NAME_TEMPLATE, POLICY_NAME,
     USERNAME,
+    AWS_SUPPORT_ACCESS_MANAGED_POLICY_ARN,
 )
 
 
@@ -331,6 +332,40 @@ def _cleanup_existing_role(iam_client, role_name):
     iam_client.delete_role(RoleName=role_name)
 
 
+def _add_managed_policy_to_role(role_name, policy_arn):
+    """Add a managed policy to an existing IAM role.
+
+    Args:
+        role_name (str): Name of the IAM role
+        policy_arn (str): ARN of the managed policy to add
+
+    Returns:
+        dict: Response from AWS
+    """
+    iam_client = boto3.client('iam')
+
+    try:
+        # Check if policy is already attached
+        attached_policies = iam_client.list_attached_role_policies(
+            RoleName=role_name)
+        for policy in attached_policies['AttachedPolicies']:
+            if policy['PolicyArn'] == policy_arn:
+                print(
+                    f"✅ Managed policy {policy_arn} already attached to {role_name}")
+                return None
+
+        # Attach policy if not already attached
+        response = iam_client.attach_role_policy(
+            RoleName=role_name,
+            PolicyArn=policy_arn
+        )
+        print(f"✅ Managed policy {policy_arn} attached to {role_name}")
+        return response
+    except Exception as e:
+        print(f"❌ Error attaching managed policy: {e}")
+        raise
+
+
 def create_agentcore_role(agent_name):
     """Create IAM role for AgentCore with proper permissions.
 
@@ -375,4 +410,49 @@ def create_agentcore_role(agent_name):
         print(f"❌ Error attaching policy: {e}")
         raise
 
+    print("📝 Attaching AWSSupportAccess policy...")
+    _add_managed_policy_to_role(
+        role_name, AWS_SUPPORT_ACCESS_MANAGED_POLICY_ARN)
+
     return role
+
+
+def get_existing_role_arn(agent_name):
+    """Check if role already exists and return its ARN.
+
+    Args:
+        agent_name (str): Agent name for role lookup
+
+    Returns:
+        str or None: Role ARN if exists, None otherwise
+    """
+    iam_client = boto3.client('iam')
+    role_name = ROLE_NAME_TEMPLATE.format(agent_name=agent_name)
+
+    try:
+        response = iam_client.get_role(RoleName=role_name)
+        return response['Role']['Arn']
+    except iam_client.exceptions.NoSuchEntityException:
+        return None
+
+
+def get_or_create_role(agent_name):
+    """Get existing role ARN or create new one if needed.
+
+    Args:
+        agent_name (str): Agent name for role management
+
+    Returns:
+        str: Role ARN
+    """
+    # Check if role already exists
+    existing_arn = get_existing_role_arn(agent_name)
+    if existing_arn:
+        print(f"✅ Using existing role: {existing_arn}")
+        return existing_arn
+
+    # Create new role if none exists
+    print("Creating new IAM role...")
+    role_response = create_agentcore_role(agent_name)
+
+    return role_response['Role']['Arn']
