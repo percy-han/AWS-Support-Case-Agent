@@ -86,7 +86,7 @@ AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Run
 3. **按顺序执行所有notebook单元格** - notebook包含所有必要的安装和配置步骤
 4. 在notebook中可验证MCP服务器正常运行
 
-#### 第二步：Agent设置  
+#### 第二步：Agent设置
 1. 打开 `Agent/Case_Agent_On_AgentCore.ipynb`
 2. **按顺序执行所有notebook单元格**
 3. 等待Agent部署完成(可能需要几分钟)
