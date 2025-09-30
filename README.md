@@ -187,7 +187,7 @@ def invoke_agent(prompt_text, attachment_path=None):
 
 if __name__ == "__main__":
     print(f"Using prompt: {prompt_text}")
-    #创建case或回复case时如果需要上传附件时用
+    #创建case或回复case时如果需要上传附件时，添加文件路径
     #invoke_agent(prompt_text,"/a/b/c.png")
     invoke_agent(prompt_text)
 ```
