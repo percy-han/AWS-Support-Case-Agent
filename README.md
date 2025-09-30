@@ -87,19 +87,19 @@ AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Run
 ### 推荐安装顺序：先MCP，后Agent
 
 #### 克隆仓库到本地
-git clone https://github.com/percy-han/AWS-Support-Case-Agent.git
+`git clone https://github.com/percy-han/AWS-Support-Case-Agent.git`
 
 #### 第一步：MCP设置
 1. 打开 `MCP/`目录
-2. 在config.py中自定义变量
-3. 打开mcp_agentcore_deployment.ipynb，**按顺序执行所有notebook单元格** - notebook包含所有必要的安装和配置步骤
+2. 在`config.py`中自定义变量
+3. 打开`mcp_agentcore_deployment.ipynb`，**按顺序执行所有notebook单元格** - notebook包含所有必要的安装和配置步骤
 4. 在notebook中可验证MCP服务器正常运行
 
 #### 第二步：Agent设置
 1. 打开 `Agent/`目录
-2. 在config.py中自定义变量，确认SECRETS_NAME和SECRETS_NAME变量与MCP中的保持一致
-3. 打开support_case_agent.py，同样修改SECRETS_NAME和SECRETS_NAME变量与MCP中的保持一致
-4. 打开support_case_agent_deployment.ipynb，**按顺序执行所有notebook单元格**
+2. 在`config.py`中自定义变量，确认`SECRETS_NAME`和`SECRETS_NAME`变量与MCP中的保持一致
+3. 打开`support_case_agent.py`，同样修改`SECRETS_NAME`和`SECRETS_NAME`变量与MCP中的保持一致
+4. 打开`support_case_agent_deployment.ipynb`，**按顺序执行所有notebook单元格**
 5. 等待Agent部署完成(可能需要几分钟)
 6. 在notebook中可验证调用Agent的效果
 
