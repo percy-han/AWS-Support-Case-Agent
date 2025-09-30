@@ -49,6 +49,10 @@ from awslabs.aws_support_mcp_server.models import (
     DescribeCasesResponse,
     ResolveCaseResponse,
     SupportCase,
+    AttachmentData,
+    AddAttachmentsToSetResponse,
+    DescribeSupportedLanguagesResponse,
+    SupportedLanguage,
 )
 from botocore.exceptions import ClientError
 from fastmcp import Context, FastMCP
@@ -576,6 +580,61 @@ async def resolve_support_case(
         return await handle_client_error(ctx, e, 'resolve_support_case')
     except Exception as e:
         return await handle_general_error(ctx, e, 'resolve_support_case')
+
+
+@track_performance
+@track_errors
+@track_request('add_attachments_to_set')
+@mcp.tool(name='add_attachments_to_set')
+async def add_attachments_to_set(
+    ctx: Context,
+    attachments: List[Dict[str, str]] = Field(
+        ..., description='List of attachments. Each attachment must have "fileName" and "data" (base64-encoded) keys'
+    ),
+    attachment_set_id: Optional[str] = Field(
+        None, description='ID of existing attachment set. If not provided, creates a new set'
+    ),
+) -> Dict[str, Any]:
+    """Add attachments to a new or existing attachment set.
+
+    ## Usage
+    - Creates a new attachment set if attachment_set_id is not provided
+    - Adds to existing set if attachment_set_id is provided
+    - All file data must be base64-encoded
+    - Attachment sets expire after 1 hour
+    - Maximum file size is 5MB per attachment
+
+    ## Example
+    ```python
+    add_attachments_to_set(
+        attachments=[{
+            "fileName": "error_log.txt",
+            "data": "base64_encoded_content"
+        }]
+    )
+    ```
+    """
+    try:
+        logger.info(f'Adding {len(attachments)} attachments to {"new set" if not attachment_set_id else f"set {attachment_set_id}"}')
+        
+        response = await support_client.add_attachments_to_set(
+            attachments=attachments,
+            attachment_set_id=attachment_set_id
+        )
+        
+        return {
+            'status': 'success',
+            'attachmentSetId': response['attachmentSetId'],
+            'expiryTime': response['expiryTime'],
+            'message': f'Successfully added {len(attachments)} attachment(s) to set {response["attachmentSetId"]}'
+        }
+        
+    except ValidationError as e:
+        return await handle_validation_error(ctx, e, 'add_attachments_to_set')
+    except ClientError as e:
+        return await handle_client_error(ctx, e, 'add_attachments_to_set')
+    except Exception as e:
+        return await handle_general_error(ctx, e, 'add_attachments_to_set')
 
 
 @track_performance
