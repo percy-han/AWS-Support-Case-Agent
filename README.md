@@ -98,7 +98,7 @@ AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Run
 #### 第二步：Agent设置
 1. 打开 `Agent/`目录
 2. 在`config.py`中自定义变量，确认`SECRETS_NAME`和`SECRETS_NAME`变量与MCP中的保持一致
-3. 打开`support_case_agent.py`，同样修改`SECRETS_NAME`和`SECRETS_NAME`变量与MCP中的保持一致
+3. 打开`support_case_agent.py`，同样修改`SECRET_ID`和`SSM_AGENT_ARN_PARAM`变量与MCP中的`SECRETS_NAME`和`SECRETS_NAME`保持一致
 4. 打开`support_case_agent_deployment.ipynb`，**按顺序执行所有notebook单元格**
 5. 等待Agent部署完成(可能需要几分钟)
 6. 在notebook中可验证调用Agent的效果
@@ -107,24 +107,40 @@ AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Run
 
 ### 可参考如下代码编写调用Agent的代码
 
-Case_Agent_On_AgentCore.ipynb notebook中有内置客户端调用Agent代码，可以直接使用：
+调用Agent代码示例：
 
-```Python
-import boto3
+```import boto3
 import json
 import codecs
 import argparse
+import base64
+import os
 from IPython.display import Markdown, display
 from boto3.session import Session
 
 prompt_text = "请分析我过去半年的case并给出最佳实践建议和洞察"
 
-def invoke_agent(prompt_text):
+def invoke_agent(prompt_text, attachment_path=None):
     boto_session = Session()
     REGION = boto_session.region_name
 
     agent_arn = launch_result.agent_arn  # ⚠️ 确保 launch_result 已经定义
     # agent_arn='arn:aws:bedrock-agentcore:us-west-2:xxxxxxxxxxxx:runtime/agentcore_agent_invoke_agentcore_mcp_test-7OoavJDoxG'
+
+    # 如果有附件，在prompt中添加附件处理指令
+    if attachment_path and os.path.exists(attachment_path):
+        with open(attachment_path, 'rb') as f:
+            file_content = base64.b64encode(f.read()).decode('utf-8')
+        
+        file_name = os.path.basename(attachment_path)
+        prompt_text += f"""
+
+需要上传附件：
+- 文件名：{file_name}
+- 文件内容（base64）：{file_content}
+
+请先调用add_attachments_to_set工具上传此附件，然后在创建case或者回复case时使用返回的attachment_set_id。
+"""
 
     agentcore_client = boto3.client("bedrock-agentcore", region_name=REGION)
 
@@ -169,6 +185,7 @@ def invoke_agent(prompt_text):
 
 if __name__ == "__main__":
     print(f"Using prompt: {prompt_text}")
+    #invoke_agent(prompt_text,"/home/sagemaker-user/AgentCore_Support/AgentCore-Support-2025092903/AWS-Support-Case-Agent/Agent/requirements.txt")
     invoke_agent(prompt_text)
 ```
 输出结果样例：
