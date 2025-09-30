@@ -116,6 +116,7 @@ import codecs
 import argparse
 import base64
 import os
+import boto3
 from IPython.display import Markdown, display
 from boto3.session import Session
 
