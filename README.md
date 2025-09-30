@@ -36,17 +36,23 @@ Amazon Bedrock AgentCore 可帮助您安全、大规模地部署和运行功能�
 
 ```
 support-agent/
-├── MCP/                           # MCP实现
-│   ├── utils.py                   # 工具函数
-│   ├── MCP_On_AgentCore.ipynb     # MCP notebook界面
-│   ├── requirements.txt           # MCP依赖
-│   └── awslabs/                   # AWS Labs MCP服务器
-│       └── aws_support_mcp_server/ # 支持专用MCP服务器
-├── Agent/                          # Bedrock Agent实现
-│   ├── Case_Agent_On_AgentCore.ipynb   # Jupyter notebook界面
-│   ├── requirements.txt           # Agent依赖
-│   └── Dockerfile                 # Agent的Dockerfile
-└── README.md                      # 本文件
+├── MCP/                                      # MCP实现
+│   ├── aws_setup.py                          # 底层环境配置
+│   ├── mcp_agentcore_deployment.ipynb        # MCP部署的Jupyter notebook
+│   ├── config.py                             # 配置文件
+│   ├── requirements.txt                      # MCP依赖
+│   ├── mcp_client_test.py                    # MCP测试脚本
+│   └── awslabs/                              # AWS Labs MCP服务器
+│       └── aws_support_mcp_server/           # 支持专用MCP服务器
+│
+├── Agent/                                    # Agent实现
+│   ├── aws_setup.py                          # 底层环境配置
+│   ├── support_case_agent_deployment.ipynb   # Agent部署的Jupyter notebook
+│   ├── config.py                             # 配置文件
+│   ├── requirements.txt                      # Agent依赖
+│   ├── support_case_agent.py                 # Agent核心代码
+│   ├── support_case_agent_test.py            # Agent调用脚本
+└── README.md                                 # 本文件
 ```
 
 ## 🏗️ 系统架构
