@@ -98,7 +98,7 @@ AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Run
 #### 第二步：Agent设置
 1. 打开 `Agent/`目录
 2. 在`config.py`中自定义变量，确认`SECRETS_NAME`和`SECRETS_NAME`变量与MCP中的保持一致
-3. 打开`support_case_agent.py`，同样修改`SECRET_ID`和`SSM_AGENT_ARN_PARAM`变量与MCP中的`SECRETS_NAME`和`SECRETS_NAME`保持一致
+3. 修改`support_case_agent.py`，使得`SECRET_ID`和`SSM_AGENT_ARN_PARAM`变量与MCP中的`SECRETS_NAME`和`SECRETS_NAME`保持一致
 4. 打开`support_case_agent_deployment.ipynb`，**按顺序执行所有notebook单元格**
 5. 等待Agent部署完成(可能需要几分钟)
 6. 修改`support_case_agent_test.py`中`agent_arn`变量为实际Agent的arn
