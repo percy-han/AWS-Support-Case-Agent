@@ -101,7 +101,8 @@ AgentCore Runtime 上的 Agent 调用 MCP Server（同样托管在 AgentCore Run
 3. 打开`support_case_agent.py`，同样修改`SECRET_ID`和`SSM_AGENT_ARN_PARAM`变量与MCP中的`SECRETS_NAME`和`SECRETS_NAME`保持一致
 4. 打开`support_case_agent_deployment.ipynb`，**按顺序执行所有notebook单元格**
 5. 等待Agent部署完成(可能需要几分钟)
-6. 在notebook中可验证调用Agent的效果
+6. 修改`support_case_agent_test.py`中`agent_arn`变量为实际Agent的arn
+7. 在notebook中可验证调用Agent的效果
 
 ## 🚀 使用方法
 
@@ -125,7 +126,7 @@ def invoke_agent(prompt_text, attachment_path=None):
     REGION = boto_session.region_name
 
     agent_arn = launch_result.agent_arn  # ⚠️ 确保 launch_result 已经定义
-    # agent_arn='arn:aws:bedrock-agentcore:us-west-2:xxxxxxxxxxxx:runtime/agentcore_agent_invoke_agentcore_mcp_test-7OoavJDoxG'
+    # agent_arn='arn:aws:bedrock-agentcore:us-west-2:xxxxxxxxxxxx:runtime/xxxxxxxxx'
 
     # 如果有附件，在prompt中添加附件处理指令
     if attachment_path and os.path.exists(attachment_path):
@@ -185,7 +186,8 @@ def invoke_agent(prompt_text, attachment_path=None):
 
 if __name__ == "__main__":
     print(f"Using prompt: {prompt_text}")
-    #invoke_agent(prompt_text,"/home/sagemaker-user/AgentCore_Support/AgentCore-Support-2025092903/AWS-Support-Case-Agent/Agent/requirements.txt")
+    #创建case或回复case时如果需要上传附件时用
+    #invoke_agent(prompt_text,"/a/b/c.png")
     invoke_agent(prompt_text)
 ```
 输出结果样例：
