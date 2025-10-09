@@ -1,7 +1,6 @@
 import boto3
 import json
 import pickle
-import os
 from boto3.session import Session
 
 
@@ -14,13 +13,16 @@ def test_support_case_agent():
         boto_session = Session()
         REGION = boto_session.region_name
 
-        # Get agent ARN from launch_result.pkl
+        # Get agent ARN from launch_result.pkl or use placeholder
         try:
             with open('launch_result.pkl', 'rb') as f:
                 launch_result = pickle.load(f)
             agent_arn = launch_result.agent_arn
-        except FileNotFoundError:
-            agent_arn = 'arn:aws:bedrock-agentcore:XXXXXX:XXXX:runtime/XXXXXXX-XXXXXX'
+        except (FileNotFoundError, AttributeError):
+            print("❌ launch_result.pkl not found or invalid. Please run deployment first.")
+            print("Update this ARN after successful deployment:")
+            agent_arn = 'arn:aws:bedrock-agentcore:us-east-1:011528260905:runtime/PLACEHOLDER'
+            return False
 
         print(f"Using agent ARN: {agent_arn}")
 
