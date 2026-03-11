@@ -207,10 +207,7 @@ mcp = FastMCP(
        - Verify file content is readable and not corrupted
        - Include context about what the attachment shows
        - Use attachment sets within their 1-hour expiry window
-    """,
-    dependencies=['pydantic', 'boto3'],
-    host='0.0.0.0',
-    stateless_http=True
+    """
 )
 
 # Initialize the AWS Support client
