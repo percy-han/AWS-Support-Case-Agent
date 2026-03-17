@@ -14,7 +14,7 @@ import logging
 
 # 配置日志
 logging.basicConfig(
-    filename='application.log',  # 日志文件名
+#    filename='application.log',  # 日志文件名
     level=logging.INFO,          # 日志级别
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # 日志格式
     datefmt='%Y-%m-%d %H:%M:%S'  # 日期格式
@@ -114,7 +114,7 @@ async def _run_once(user_input: str, system_prompt: str):
 
         logging.info(f"创建 Agent..")
         agent = Agent(
-            model="us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+            model="us.anthropic.claude-sonnet-4-5-20250929-v1:0",
             tools=tools,
             system_prompt=system_prompt
         )
