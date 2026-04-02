@@ -5,7 +5,6 @@ import json
 from strands import Agent
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
 from boto3.session import Session
-from datetime import timedelta
 from strands.tools.mcp import MCPClient
 from mcp.client.streamable_http import streamablehttp_client
 from datetime import datetime, timedelta, timezone

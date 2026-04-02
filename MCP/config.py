@@ -1,5 +1,8 @@
 """Configuration constants for MCP server deployment."""
 
+# AWS Configuration
+AWS_PROFILE_NAME = ''
+
 # Cognito Configuration
 POOL_NAME = 'AWS-Support-MCPServerPool'
 CLIENT_NAME = 'AWS-Support-MCP-Server-PoolClient'
